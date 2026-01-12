@@ -123,8 +123,8 @@ router.use('/execute', controller.execute);
  */
 
 router.get('/config.json', (req, res) => {
-    logger.debug(`[config.json Debug] - https://${req.headers.host}/zalo/custom-activity/execute`);
-    console.log(`[config.json Log] - https://${req.headers.host}/zalo/custom-activity/execute`);
+    logger.debug(`[config.json Debug] - https://${req.headers.host}/zalo/custom-activity-main/execute`);
+    console.log(`[config.json Log] - https://${req.headers.host}/zalo/custom-activity-main/execute`);
 
     res.send({
         "workflowApiVersion": "1.1",
@@ -152,24 +152,24 @@ router.get('/config.json', (req, res) => {
                 "timeout": 100000,
                 "retryDelay": 10000,
                 "concurrentRequests": 1,
-                "url": `https://${req.headers.host}/zalo/custom-activity/execute`,
+                "url": `https://${req.headers.host}/zalo/custom-activity-main/execute`,
                 "verb": "POST",
                 "useJwt": true
             }
         },
         "configurationArguments": {
             "save": {
-                "url": `https://${req.headers.host}/zalo/custom-activity/save`,
+                "url": `https://${req.headers.host}/zalo/custom-activity-main/save`,
                 "verb": "POST",
                 "useJwt": true
             },
             "publish": {
-                "url": `https://${req.headers.host}/zalo/custom-activity/publish`,
+                "url": `https://${req.headers.host}/zalo/custom-activity-main/publish`,
                 "verb": "POST",
                 "useJwt": true
             },
             "validate": {
-                "url": `https://${req.headers.host}/zalo/custom-activity/validate`,
+                "url": `https://${req.headers.host}/zalo/custom-activity-main/validate`,
                 "verb": "POST",
                 "useJwt": true
             }

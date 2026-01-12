@@ -291,10 +291,10 @@ export function loadPreviewContent(content, selectedOA, isLoad) {
         let messageType = getCheckedAttr('select-type', 'data-value');
 
         if (messageType === 'ZaloOA')
-            endpoint = `/zalo/custom-activity/getContent/${content}`;
+            endpoint = `/zalo/custom-activity-main/getContent/${content}`;
         else {
             let oa = selectedOA || getCheckedAttr('select-account', 'data-value');
-            endpoint = `/zalo/custom-activity/getZNSTemplateDetail/${content}/${oa}`;
+            endpoint = `/zalo/custom-activity-main/getZNSTemplateDetail/${content}/${oa}`;
         }
 
         fetch(endpoint, {
@@ -412,7 +412,7 @@ export function loadContent(messageType, selectedValue, selectedName, oa, connec
 
     //Load the Custom Content Blocks
     if (messageType === 'ZaloOA') {
-        fetch('/zalo/custom-activity/getCustomContentBlocks', {
+        fetch('/zalo/custom-activity-main/getCustomContentBlocks', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -450,7 +450,7 @@ export function loadContent(messageType, selectedValue, selectedName, oa, connec
     else if (messageType === 'ZaloZNS') { //Load the Templates from Zalo
         let selectedOA = oa || getCheckedAttr('select-account', 'data-value');
         if (selectedOA) {
-            fetch(`/zalo/custom-activity/getZNSTemplates/${selectedOA}`, {
+            fetch(`/zalo/custom-activity-main/getZNSTemplates/${selectedOA}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

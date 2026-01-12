@@ -15,7 +15,7 @@ const webhook = require('./modules/webhook');
 const axios = require('axios')
 const zalo = require('./modules/zalo')
 const util = require('./modules/util')
-const controller = require('./custom-activity/custom_activity_controller')
+const controller = require('./custom-activity-main/custom_activity_controller')
 
 const zaloRouter = express.Router(); // <--- ADD THIS LINE
 // --------------------------- Middleware ---------------------------
@@ -35,8 +35,8 @@ zaloRouter.use(express.static(path.join(__dirname, 'publicFiles')));
 app.set('view engine', 'ejs');
 
 // --------------------------- Routes -------------------------------
-const customActivityRouter = require('./custom-activity/custom_activity_routes');
-zaloRouter.use('/custom-activity', customActivityRouter);
+const customActivityRouter = require('./custom-activity-main/custom_activity_routes');
+zaloRouter.use('/custom-activity-main', customActivityRouter);
 zaloRouter.use('/custom-content-block', customContentBlockRouter);
 
 // Health Check Endpoint
