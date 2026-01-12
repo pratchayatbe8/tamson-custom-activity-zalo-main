@@ -17,47 +17,48 @@ const zalo = require('./modules/zalo')
 const util = require('./modules/util')
 const controller = require('./custom-activity/custom_activity_controller')
 
+const zaloRouter = express.Router(); // <--- ADD THIS LINE
 // --------------------------- Middleware ---------------------------
 
 // Parse incoming requests
-app.use(bodyParser.raw({ type: 'application/jwt' })); // For JWT payloads
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.text());
+zaloRouter.use(bodyParser.raw({ type: 'application/jwt' })); // For JWT payloads
+zaloRouter.use(express.json());
+zaloRouter.use(express.urlencoded({ extended: true }));
+zaloRouter.use(express.text());
 // --------------------------- Static Assets ------------------------
-app.use('/slds', express.static(path.join(__dirname, 'node_modules/@salesforce-ux/design-system/assets')));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'publicFiles')));
+zaloRouter.use('/slds', express.static(path.join(__dirname, 'node_modules/@salesforce-ux/design-system/assets')));
+zaloRouter.use('/images', express.static(path.join(__dirname, 'images')));
+zaloRouter.use(express.static(path.join(__dirname, 'public')));
+zaloRouter.use(express.static(path.join(__dirname, 'publicFiles')));
 
 // --------------------------- View Engine --------------------------
-app.set('view engine', 'ejs');
+zaloRouter.set('view engine', 'ejs');
 
 // --------------------------- Routes -------------------------------
 const customActivityRouter = require('./custom-activity/custom_activity_routes');
-app.use('/custom-activity', customActivityRouter);
-app.use('/custom-content-block', customContentBlockRouter);
+zaloRouter.use('/custom-activity', customActivityRouter);
+zaloRouter.use('/custom-content-block', customContentBlockRouter);
 
 // Health Check Endpoint
-app.get('/health', (req, res) => res.status(200).send('OK ZALO\n'));
+zaloRouter.get('/health', (req, res) => res.status(200).send('OK ZALO\n'));
 
 //This is use for Zalo registration domain
-app.get('/', (req, res)=> {
+zaloRouter.get('/', (req, res)=> {
     res.send('<html><head><meta name="zalo-platform-site-verification" content="NVxbSfRASoH6tAS7jDHqKMhUqsY6g0SsDJOv" /></head><body></body></html>');
   });
-app.get('/zalo_verifierNVxbSfRASoH6tAS7jDHqKMhUqsY6g0SsDJOv.html', (req, res) => {
+zaloRouter.get('/zalo_verifierNVxbSfRASoH6tAS7jDHqKMhUqsY6g0SsDJOv.html', (req, res) => {
   res.sendFile(
     path.join(__dirname, 'public/js', 'zalo_verifierNVxbSfRASoH6tAS7jDHqKMhUqsY6g0SsDJOv.html')
   );
 });
   
-app.post('/webhook', (req, res) => {
+zaloRouter.post('/webhook', (req, res) => {
   webhook.processRequest(req, res);
   res.sendStatus(200);
 })
 
 
-app.post('/zaloTemplates', async (req, res) => {
+zaloRouter.post('/zaloTemplates', async (req, res) => {
   try {
     const token = req.body.Access_Token;
     const oaId = req.body.oaId;
@@ -96,7 +97,7 @@ app.post('/zaloTemplates', async (req, res) => {
 });
 
 
-app.post('/mcTemplates', async (req, res) => {
+zaloRouter.post('/mcTemplates', async (req, res) => {
   try {
     const contentBlocks = await controller.getCustomContentBlocks();
 
@@ -128,6 +129,8 @@ app.post('/mcTemplates', async (req, res) => {
  * Deployment
  * ============================================================================
  */
+
+app.use('/zalo', zaloRouter);
 
 const port = process.env.PORT || 3000;
 
