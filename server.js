@@ -32,7 +32,7 @@ zaloRouter.use(express.static(path.join(__dirname, 'public')));
 zaloRouter.use(express.static(path.join(__dirname, 'publicFiles')));
 
 // --------------------------- View Engine --------------------------
-zaloRouter.set('view engine', 'ejs');
+app.set('view engine', 'ejs');
 
 // --------------------------- Routes -------------------------------
 const customActivityRouter = require('./custom-activity/custom_activity_routes');

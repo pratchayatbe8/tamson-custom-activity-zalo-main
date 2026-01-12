@@ -412,7 +412,7 @@ export function loadContent(messageType, selectedValue, selectedName, oa, connec
 
     //Load the Custom Content Blocks
     if (messageType === 'ZaloOA') {
-        fetch('/custom-activity/getCustomContentBlocks', {
+        fetch('/zalo/custom-activity/getCustomContentBlocks', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
