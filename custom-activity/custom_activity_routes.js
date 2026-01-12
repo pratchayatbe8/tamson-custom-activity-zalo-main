@@ -5,7 +5,7 @@
  */
 const mc = require('../modules/mc.js'); 
 
-
+const logger = require('../modules/logger');
 const express = require('express');
 const router = express.Router();
 const controller = require('./custom_activity_controller');
@@ -123,6 +123,9 @@ router.use('/execute', controller.execute);
  */
 
 router.get('/config.json', (req, res) => {
+    logger.debug(`[config.json Debug] - https://${req.headers.host}/custom-activity/execute`);
+    console.log(`[config.json Log] - https://${req.headers.host}/custom-activity/execute`);
+
     res.send({
         "workflowApiVersion": "1.1",
         "metaData": {
