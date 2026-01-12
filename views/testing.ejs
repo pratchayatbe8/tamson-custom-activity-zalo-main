@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Testing Calling API</title>
+    <script type="text/javascript">
+        function callJsonPlaceHolder() {
+            fetch('/jsonPlaceHolder', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => response.json())
+            .then(data => {
+                document.querySelector('#result').innerHTML = JSON.stringify(data)
+            })
+            .catch((err) => { 
+                console.log('Error occurred in callJsonPlaceHolder: ', err)
+                document.querySelector('result').innerHTML = err
+            });
+        }
+
+        function callZaloAPI() {
+            fetch('/zaloAPI', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => response.json())
+            .then(data => {
+                document.querySelector('#result').innerHTML = 'Axios === ' +  JSON.stringify(data)
+            })
+            .catch((err) => console.log('Error occurred in callZaloAPI: ', err));
+        }
+
+        function callZaloAPIWithoutAxios() {
+            fetch('/zaloAPIWithoutAxios', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => response.json())
+            .then(data => {
+                document.querySelector('#result').innerHTML = 'Without Axios === ' +  JSON.stringify(data)
+            })
+            .catch((err) => console.log('Error occurred in callZaloAPIWithoutAxios: ', err));
+        }
+
+    </script>
+    
+</head>
+
+<body>
+    
+    <button onclick="callJsonPlaceHolder()">Axios - Call jsonplaceholder.typicode.com</button>    
+
+    <button onclick="callZaloAPI()">Axios - Call API business.openapi.zalo.me</button>
+
+    <button onclick="callZaloAPIWithoutAxios()">Call API business.openapi.zalo.me without Axios</button>
+
+    <div id="result" style="margin-top: 20px;"> 
+
+    </div>
+    
+</body>
+
+</html>
