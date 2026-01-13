@@ -182,7 +182,7 @@ async function process(body) {
         else { // messageType is ZaloZNS
             const template = obj.zaloContentObject;
             const templateData = {};
-            template.data.data.listParams.forEach(item => {
+            template.data.listParams.forEach(item => {
                 let paramName = item.name.replace(/___/g, ':');
                 let paramValue = record[paramName] ? record[paramName] : 'N/A';
                 if (item.type.toUpperCase() === 'NUMBER') {

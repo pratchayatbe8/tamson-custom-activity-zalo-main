@@ -469,7 +469,7 @@ export function loadContent(messageType, selectedValue, selectedName, oa, connec
                     });
 
                     if (selectedValue) {
-                        assignInput('#zalo-content', selectedValue);
+                        assignInput('#zalo-content', selectedName);
                     }
                     else {
                         clearInput("#zalo-content");
@@ -480,6 +480,9 @@ export function loadContent(messageType, selectedValue, selectedName, oa, connec
 
                 })
                 .catch((err) => console.log('Error occurred in /getZNSTemplates: ', err));
+        }
+        else{
+            showSpinner(false);
         }
 
     }
