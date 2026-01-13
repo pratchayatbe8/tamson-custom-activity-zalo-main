@@ -2,7 +2,6 @@ const { createLogger, format, transports } = require('winston');
 const path = require('path');
 
 module.exports = createLogger({
-    // === CRITICAL FIX 1: Add a global log level. 'debug' is best for troubleshooting. ===
     level: 'debug', 
 
     transports: [
@@ -16,7 +15,6 @@ module.exports = createLogger({
                 format.printf(info => `${info.timestamp},${info.level},${info.message}`),
         )}),
 
-        // === CRITICAL FIX 2: Add a format for the Console. Use simple format for readability. ===
         new transports.Console({
             format: format.combine(
                 format.colorize(),
