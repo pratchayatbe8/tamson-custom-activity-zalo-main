@@ -84,12 +84,12 @@ webhook.processRequest = async (req, res) => {
         mc.upsertDERow(config.sfmc.subDeName,
           {
             'Zalo_ID': event.sender.id,
-            'Address': event.info.user_address,
+            // 'Address': event.info.user_address,
             'Phone': event.info.phone,
-            'City': event.info.user_city,
-            'District': event.info.district,
+            // 'City': event.info.user_city,
+            // 'District': event.info.district,
             'Name': event.info.name,
-            'Ward': event.info.user_ward,
+            // 'Ward': event.info.user_ward,
           }
         ).catch(err => { logger.error(`[Exception in webhook - user_submit_info] ${err}`) });
 
