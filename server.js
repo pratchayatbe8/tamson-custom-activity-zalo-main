@@ -21,10 +21,28 @@ const zaloRouter = express.Router(); // <--- ADD THIS LINE
 // --------------------------- Middleware ---------------------------
 
 // Parse incoming requests
-zaloRouter.use(bodyParser.raw({ type: 'application/jwt' })); // For JWT payloads
-zaloRouter.use(express.json());
+// zaloRouter.use(bodyParser.raw({ type: 'application/jwt' })); // For JWT payloads
+// zaloRouter.use(express.json());
+// zaloRouter.use(express.urlencoded({ extended: true }));
+// zaloRouter.use(express.text());
+zaloRouter.use(bodyParser.raw({ type: 'application/jwt' }));
+zaloRouter.use(express.json({
+  strict: true,
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
 zaloRouter.use(express.urlencoded({ extended: true }));
-zaloRouter.use(express.text());
+zaloRouter.use(express.text({ type: '*/*' }));
+zaloRouter.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.log(`[zaloRouter] Invalid JSON received: ${req.rawBody}`);
+    return res.status(400).json({
+      message: 'Invalid JSON payload'
+    });
+  }
+  next(err);
+});
 // --------------------------- Static Assets ------------------------
 zaloRouter.use('/slds', express.static(path.join(__dirname, 'node_modules/@salesforce-ux/design-system/assets')));
 zaloRouter.use('/images', express.static(path.join(__dirname, 'images')));
@@ -54,7 +72,7 @@ zaloRouter.get('/zalo_verifierNVxbSfRASoH6tAS7jDHqKMhUqsY6g0SsDJOv.html', (req, 
   
 zaloRouter.post('/webhook', (req, res) => {
   webhook.processRequest(req, res);
-  res.sendStatus(200);
+  // res.sendStatus(200);
 })
 
 
