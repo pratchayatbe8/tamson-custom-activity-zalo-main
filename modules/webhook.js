@@ -54,11 +54,11 @@ webhook.processRequest = async (req, res) => {
         };
 
         await mc.upsertDERow(config.sfmc.subDeName, payload);
-        if (process.env.DEBUG_LOG === 'true') {
+        // if (process.env.DEBUG_LOG === 'true') {
           logger.info(
             `[Webhook] Successfully processed | status=${event.event_name}, id=${event.follower.id}`
           );
-        }
+        // }
 
         return res.status(200).json({ message: 'Follow event processed' });
       }
@@ -90,11 +90,11 @@ webhook.processRequest = async (req, res) => {
 
         await mc.upsertDERow(config.sfmc.logDeName, payload);
 
-        if (process.env.DEBUG_LOG === 'true') {
+        // if (process.env.DEBUG_LOG === 'true') {
           logger.info(
             `[Webhook] Successfully processed | status=user_received_message, msgId=${event.message.msg_id}`
           );
-        }
+        // }
 
         return res.status(200).json({ message: 'Message delivery processed' });
       }
@@ -116,11 +116,11 @@ webhook.processRequest = async (req, res) => {
           });
         }
 
-        if (process.env.DEBUG_LOG === 'true') {
+        // if (process.env.DEBUG_LOG === 'true') {
           logger.info(
             `[Webhook] Successfully processed | status=user_seen_message, msgId=${msgId}`
           );
-        }
+        // }
 
         return res.status(200).json({ message: 'Seen event processed' });
       }
@@ -143,11 +143,11 @@ webhook.processRequest = async (req, res) => {
         };
 
         await mc.upsertDERow(config.sfmc.subDeName, payload);
-        if (process.env.DEBUG_LOG === 'true') {
+        // if (process.env.DEBUG_LOG === 'true') {
           logger.info(
             `[Webhook] Successfully processed | status=user_submit_info, id=${event.sender.id}`
           );
-        }
+        // }
 
         return res.status(200).json({ message: 'User info updated' });
       }
