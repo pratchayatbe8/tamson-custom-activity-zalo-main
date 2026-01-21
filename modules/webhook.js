@@ -48,6 +48,8 @@ webhook.processRequest = async (req, res) => {
 
         const payload = {
           Zalo_ID: event.follower.id,
+          App_ID: event.app_id,
+          OA_ID: event.oa_id,
           Status: event.event_name,
           Zalo_ID_By_App: event.user_id_by_app,
           [isFollow ? 'Subscribe_Date' : 'Unsubscribe_Date']: actionDate
