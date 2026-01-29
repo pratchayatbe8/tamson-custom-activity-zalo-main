@@ -33,7 +33,7 @@ router.get('/index.html', async (req, res) => {
               "id": "ZaloOA"
             },
             {
-              "name": "Zalo Notification Service (ZNS)",
+              "name": "Zalo Notification Service(ZNS)/Zalo Business Solutions(ZBS)",
               "id": "ZaloZNS"
             }
           ];

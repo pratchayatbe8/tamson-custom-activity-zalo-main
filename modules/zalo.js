@@ -120,6 +120,8 @@ zalo.sendMessage = (token, payload, messageType, zaloMessageType) => {
     type = 'transaction'
   else if (zaloMessageType === 'MEDIA')
     type = 'promotion';
+  else if (zaloMessageType === 'TEMPLATE')
+    type = 'template';
 
   const options = {
     method: 'post',

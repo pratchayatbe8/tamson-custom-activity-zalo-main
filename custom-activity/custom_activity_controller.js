@@ -207,11 +207,26 @@ async function process(body) {
                 templateData[item.name] = paramValue;
             });
 
-            zaloPayload = {
-                "phone": obj.uid,
-                "template_id": obj.zaloContentId,
-                "template_data": templateData
-            };
+            // 29012026 Add this from Zalo ZBS Update
+            // Check if selected as UID nor Phone, or consider check field name contain id to use UID Sending
+            if (obj.uid && obj.uid.length > 15) {
+                zaloMessageType = 'TEMPLATE';
+                obj.messageType = 'ZaloOA';
+                //mcRecord['Message_Type'] = obj.messageType;
+                
+                zaloPayload = {
+                    "user_id": obj.uid,
+                    "template_id": obj.zaloContentId,
+                    "template_data": templateData
+                };
+            }
+            else{
+                zaloPayload = {
+                    "phone": obj.uid,
+                    "template_id": obj.zaloContentId,
+                    "template_data": templateData
+                };
+            }
 
         }
 
