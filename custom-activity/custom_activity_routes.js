@@ -28,7 +28,7 @@ router.get('/index.html', async (req, res) => {
         );
 
         var zaloType = [
-            {
+            {   
               "name": "Zalo OA Message",
               "id": "ZaloOA"
             },

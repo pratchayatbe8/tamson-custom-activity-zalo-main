@@ -212,7 +212,7 @@ async function process(body) {
             if (obj.uid && obj.uid.length > 15) {
                 zaloMessageType = 'TEMPLATE';
                 obj.messageType = 'ZaloOA';
-                //mcRecord['Message_Type'] = obj.messageType;
+                mcRecord['Message_Type'] = obj.messageType;
                 
                 zaloPayload = {
                     "user_id": obj.uid,
@@ -246,7 +246,14 @@ async function process(body) {
             logger.error(`[Zalo Response Error] - ${obj.contactKey}-${obj.uid} - ${JSON.stringify(zaloResponse.data)}`);
             mcRecord['API_Response_Error'] = zaloResponse.data.message;
             mcRecord['API_Response_Code'] = zaloResponse.data.error;
-            zaloMessageId = `ERROR_${activityRequestId}`;
+
+            if(zaloResponse.data.data && (zaloResponse.data.data.message_id || zaloResponse.data.data.msg_id)){
+                zaloMessageId = (obj.messageType === 'ZaloOA') ? zaloResponse.data.data.message_id : zaloResponse.data.data.msg_id;
+            }
+            else{
+                zaloMessageId = `${activityRequestId}`;
+            }
+
         }
 
         mcRecord['Message_ID'] = zaloMessageId;
@@ -258,7 +265,7 @@ async function process(body) {
     }
     catch (err) {
         // Activity Level Error
-        mcRecord['Message_ID'] = `ERROR_${activityRequestId}`;
+        mcRecord['Message_ID'] = `${activityRequestId}`;
         mcRecord['Activity_Error'] = err.message;
 
         logger.error(`[Exception in processRequest] ${obj.contactKey}-${obj.uid} - ${err} -${err.stack}`);
