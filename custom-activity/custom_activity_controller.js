@@ -70,6 +70,11 @@ async function process(body) {
         let zaloPayload = {};
         let zaloMessageType = 'CONSULTING';
 
+        // console.log('[process] DEBUG: zaloPayload: ', zaloPayload);
+        const sentDate = new Date();
+        mcRecord['Sent_Date'] = sentDate.toISOString();
+        mcRecord['Template_ID'] = obj.zaloContentId;
+
         if (obj.messageType === 'ZaloOA') {
             const content = obj.zaloContentObject;
 
@@ -230,10 +235,7 @@ async function process(body) {
 
         }
 
-        // console.log('[process] DEBUG: zaloPayload: ', zaloPayload);
-        const sentDate = new Date();
-        mcRecord['Sent_Date'] = sentDate.toISOString();
-        mcRecord['Template_ID'] = obj.zaloContentId;
+        
 
         const zaloResponse = await zalo.sendMessage(token, zaloPayload, obj.messageType, zaloMessageType);
         let zaloMessageId = '';
