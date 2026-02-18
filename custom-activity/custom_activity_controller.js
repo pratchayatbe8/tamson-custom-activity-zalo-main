@@ -323,7 +323,7 @@ controller.getZaloMessages = () => {
 }
 
 controller.getCustomContentBlocks = async () => {
-    let fields = ['Id', 'Name', 'meta'],
+    let fields = ['Id', 'Name', 'meta','createdDate','modifiedDate'],
         zaloFolderName = config.sfmcContentCategories.customBlockPrefix,
         assetTypeId = config.sfmcAssetTypes.customBlock;
 
