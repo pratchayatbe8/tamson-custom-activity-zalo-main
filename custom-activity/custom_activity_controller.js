@@ -187,11 +187,13 @@ async function process(body) {
         else { // messageType is ZaloZNS
 
 
+            
+            const template = obj.zaloContentObject;
+
             // DEBUG FOR PERSONALIZE SF FIELD 04032026
             console.log('|DEBUG|record|', record);
             console.log('|DEBUG|template.data.listParams|', template.data.listParams);
-            
-            const template = obj.zaloContentObject;
+
             const templateData = {};
             template.data.listParams.forEach(item => {
                 let paramName = item.name.replace(/___/g, ':');
