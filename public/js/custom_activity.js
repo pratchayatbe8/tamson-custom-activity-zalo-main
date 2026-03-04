@@ -196,6 +196,10 @@ function save() {
         inArgument.targetValues[field] = `{{Event.${eventDefinitionKey}."${field}"}}`;
     });
 
+    // DEBUG FOR PERSONALIZE SF FIELD 04032026
+    console.log('|DEBUG|inArgument.targetFields|', inArgument.targetFields);
+    console.log('|DEBUG|inArgument.targetValues|', inArgument.targetValues);
+
     Object.assign(inArgument, {
         dataExtensionKey: journeyDefinition.dataExtensionId,
         dataExtensionName: journeyDefinition.dataExtensionName,

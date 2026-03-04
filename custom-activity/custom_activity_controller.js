@@ -185,6 +185,12 @@ async function process(body) {
 
         }
         else { // messageType is ZaloZNS
+
+
+            // DEBUG FOR PERSONALIZE SF FIELD 04032026
+            console.log('|DEBUG|record|', record);
+            console.log('|DEBUG|template.data.listParams|', template.data.listParams);
+            
             const template = obj.zaloContentObject;
             const templateData = {};
             template.data.listParams.forEach(item => {
@@ -232,6 +238,9 @@ async function process(body) {
                     "template_data": templateData
                 };
             }
+
+            // DEBUG FOR PERSONALIZE SF FIELD 04032026
+            console.log('|DEBUG|zaloPayload|', zaloPayload);
 
         }
 
