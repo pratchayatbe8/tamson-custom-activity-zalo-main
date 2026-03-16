@@ -122,13 +122,12 @@ webhook.processRequest = async (req, res) => {
             Seen_Status: true,
             Seen_Date: seenDate
           });
+          if (process.env.DEBUG_LOG === 'true') {
+            logger.info(
+              `[Webhook] Successfully processed | status=user_seen_message, msgId=${msgId}`
+            );
+          }
         }
-
-        // if (process.env.DEBUG_LOG === 'true') {
-          logger.info(
-            `[Webhook] Successfully processed | status=user_seen_message, msgId=${msgId}`
-          );
-        // }
 
         return res.status(200).json({ message: 'Seen event processed' });
       }
