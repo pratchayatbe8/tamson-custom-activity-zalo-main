@@ -12,22 +12,31 @@ const authURL = config.sfmc.authOrigin;
 const restURL = config.sfmc.origin;
 const soapURL = config.sfmc.soapOrigin;
 
+let IET_Client = null;
 
-const IET_Client = new ET_Client(clientId, clientSecret, stack, {
-    origin: restURL,
-    soapOrigin: soapURL,
-    authOrigin: authURL,
-    authOptions: {
-        authVersion: authVersion,
-        accountId: MID,
-        applicationType: 'server',
-        scope: ''
+const getClient = () => {
+    if (!IET_Client) {
+        IET_Client = new ET_Client(clientId, clientSecret, stack, {
+            origin: restURL,
+            soapOrigin: soapURL,
+            authOrigin: authURL,
+            authOptions: {
+                authVersion: authVersion,
+                accountId: MID,
+                applicationType: 'server',
+                scope: ''
+            }
+        });
     }
-});
+    return IET_Client;
+};
 
 const mc = {};
 
 mc.getDERows = async (dataExtensionName, fields, filter) => {
+
+    const cET_Client = getClient();
+    
     const options = {
         Name: dataExtensionName,
         props: fields
@@ -35,7 +44,7 @@ mc.getDERows = async (dataExtensionName, fields, filter) => {
 
     if (filter)
         options.filter = filter;
-    const deRow = IET_Client.dataExtensionRow(options);
+    const deRow = cET_Client.dataExtensionRow(options);
     return new Promise((resolve, reject) => {
         let lData = [];
 
@@ -85,12 +94,13 @@ mc.getDERows = async (dataExtensionName, fields, filter) => {
 },
 
 mc.createDERow = async (dataExtensionName, Record) => {
+    const cET_Client = getClient();
 
     let options = {
         Name: dataExtensionName,
         props: Record
     };
-    var deRow = IET_Client.dataExtensionRow(options)
+    var deRow = cET_Client.dataExtensionRow(options)
 
     return new Promise((resolve, reject) => {
         try {
@@ -116,12 +126,14 @@ mc.createDERow = async (dataExtensionName, Record) => {
 
 
 mc.updateDERow = (dataExtensionName, Record) => {
+    const cET_Client = getClient();
+
     return new Promise((resolve, reject) => {
         let options = {
             Name: dataExtensionName,
             props: Record
         };
-        let deRow = IET_Client.dataExtensionRow(options)
+        let deRow = cET_Client.dataExtensionRow(options)
         deRow.patch((err, response) => {
             if (err) {
                 if (!isConcurrencyViolation(err)) {
@@ -136,12 +148,14 @@ mc.updateDERow = (dataExtensionName, Record) => {
 },
 
 mc.deleteDERow = (dataExtensionName, Record) => {
+    const cET_Client = getClient();
+
     return new Promise((resolve, reject) => {
         let options = {
             Name: dataExtensionName,
             props: Record
         };
-        let deRow = IET_Client.dataExtensionRow(options)
+        let deRow = cET_Client.dataExtensionRow(options)
         deRow.delete((err, response) => {
             if (err) {
                 console.log('[mc.deleteDERow] ERROR: ' + JSON.stringify(err));
@@ -154,12 +168,14 @@ mc.deleteDERow = (dataExtensionName, Record) => {
 },
 
 mc.getAllDataExtensions = () => {
+    const cET_Client = getClient();
+
     return new Promise((resolve, reject) => {
         const options = {
             props: ['Name', 'CustomerKey', 'IsSendable']
         };
 
-        const dataExtension = IET_Client.dataExtension(options);
+        const dataExtension = cET_Client.dataExtension(options);
 
         dataExtension.get((err, response) => {
             if (err) {
@@ -200,6 +216,8 @@ mc.getAllDataExtensions = () => {
 
 
 mc.getDataExtensionFields = (dataExtensionKey) => {
+    const cET_Client = getClient();
+
     return new Promise((resolve, reject) => {
         let options = {
             props: ['Name', 'CustomerKey', 'FieldType'],
@@ -210,7 +228,7 @@ mc.getDataExtensionFields = (dataExtensionKey) => {
                 rightOperand: dataExtensionKey
             }
         };
-        let deColumn = IET_Client.dataExtensionColumn(options);
+        let deColumn = cET_Client.dataExtensionColumn(options);
         deColumn.get(function (err, response) {
             if (err) {
                 console.log('[mc.getAllDataExtensionFields] ERROR: ' + JSON.stringify(err));
@@ -226,6 +244,8 @@ mc.getDataExtensionFields = (dataExtensionKey) => {
 
 //Content Builder
 mc.getContent = (fields, query) => {
+    const cET_Client = getClient();
+
     return new Promise((resolve, reject) => {
         let payload = {
             "fields": fields,
@@ -243,7 +263,7 @@ mc.getContent = (fields, query) => {
             }
         };
 
-        IET_Client.RestClient
+        cET_Client.RestClient
             .post({ uri: '/asset/v1/content/assets/query', body: JSON.stringify(payload) })
             .then(function (response) {
                 resolve(response.body);
@@ -256,6 +276,7 @@ mc.getContent = (fields, query) => {
 },
 
 mc.getContentById = (contentId, fields, retries = config.sfmc.retries, delay = config.sfmc.retriesDelay) => {
+    const cET_Client = getClient();
     
     return new Promise((resolve, reject) => {
         let endpoint = fields
@@ -263,7 +284,7 @@ mc.getContentById = (contentId, fields, retries = config.sfmc.retries, delay = c
             : `${config.sfmc.origin}/asset/v1/content/assets/${contentId}`;
 
         const requestContent = (retryCount) => {
-            IET_Client.RestClient
+            cET_Client.RestClient
                 .get(endpoint)
                 .then(function (response) {
                     let result = response.body;
