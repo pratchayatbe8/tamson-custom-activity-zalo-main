@@ -73,7 +73,7 @@ webhook.processRequest = async (req, res) => {
         }
 
         if (event.message?.tracking_id) {
-          // logger.warn('[Webhook] Skipped message with tracking_id');
+          logger.info('[Webhook] Skipped message with tracking_id');
           return res.status(200).json({ message: 'Skipped' });
         }
 
