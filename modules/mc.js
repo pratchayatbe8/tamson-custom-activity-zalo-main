@@ -314,12 +314,16 @@ mc.getContentById = (contentId, fields, retries = config.sfmc.retries, delay = c
 
 
 mc.upsertDERow = async (dataExtensionName, record) => {
-    return retry(async () => {
+    return await retry(async () => {
         try {
             return await mc.updateDERow(dataExtensionName, record);
         } catch (err) {
             if (isConcurrencyViolation(err)) {
-                return await mc.createDERow(dataExtensionName, record);
+                try {
+                    return await mc.createDERow(dataExtensionName, record);
+                } catch (createErr) {
+                    throw createErr;
+                }
             }
             throw err;
         }
@@ -354,11 +358,12 @@ const wait = () => new Promise(resolve => setTimeout(resolve, config.sfmc.retrie
 
 function isConcurrencyViolation(err) {
     try {
-        return (
-            err?.results?.[0]?.ErrorCode === '2' ||
-            err?.results?.[0]?.ErrorMessage?.includes('Concurrency violation')
-        );
-    } catch {
+        const results = err?.results || (err?.body?.Results);
+        const errorCode = results?.[0]?.ErrorCode;
+        return errorCode === '2' || errorCode === 2 || 
+               (typeof results?.[0]?.ErrorMessage === 'string' && 
+                results[0].ErrorMessage.includes('Concurrency violation'));
+    } catch (e) {
         return false;
     }
 }
