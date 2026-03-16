@@ -72,6 +72,12 @@ webhook.processRequest = async (req, res) => {
           return res.status(400).json({ message: 'Missing required fields' });
         }
 
+        if (event.message?.tracking_id) {
+          // logger.warn('[Webhook] Skipped message with tracking_id');
+          return res.status(200).json({ message: 'Skipped' });
+        }
+
+
         const deliveryTime = event.message.delivery_time || event.timestamp;
         const deliveryDate = new Date(Number(deliveryTime)).toISOString();
 

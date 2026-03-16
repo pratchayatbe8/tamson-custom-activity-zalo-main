@@ -29,12 +29,12 @@ controller.execute = async (req, res) => {
         }
         else {
             console.log('[controller.execute] ERROR: Execute Data not available');
-            res.sendStatus(200);
+            res.sendStatus(500);
         }
     }
     catch (err) {
         console.log('[controller.execute] FETAL ERROR: ', err.message);
-        res.sendStatus(200);
+        res.sendStatus(500);
     }
 
 }
