@@ -240,8 +240,9 @@ async function process(body) {
 
         }
 
-        
-
+        if (process.env.DEBUG_LOG === 'true') {
+            logger.info(`[controller] zaloPayload: ${JSON.stringify(zaloPayload)}`);
+        }
         const zaloResponse = await zalo.sendMessage(token, zaloPayload, obj.messageType, zaloMessageType);
         let zaloMessageId = '';
         if (zaloResponse.data.error === 0) {
