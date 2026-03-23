@@ -239,7 +239,7 @@ async function process(body) {
             }
 
         }
-        console.log('[controller] DEBUG: zaloPayload: ', zaloPayload);
+        // console.log('[controller] DEBUG: zaloPayload: ', zaloPayload);
 
         if (process.env.DEBUG_LOG === 'true') {
             logger.info(`[controller] zaloPayload: ${JSON.stringify(zaloPayload)}`);
